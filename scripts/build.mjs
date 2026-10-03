@@ -311,6 +311,16 @@ function filters(items) {
     .join('\n');
 }
 
+// Logo : « lab » + un ballon penché dont le liquide est le point de Marill.dev
+const MARK = '<svg class="brand__flask" viewBox="0 0 22 32" aria-hidden="true" focusable="false">'
+  + '<path class="flask__liquid" d="M6.26 18A6.2 6.2 0 1 0 15.74 18Z"/>'
+  + '<g transform="rotate(14 11 22)">'
+  + '<circle class="flask__bub" cx="11" cy="22" r="2" style="--rest:-23px;--dx:1px"/>'
+  + '<circle class="flask__bub" cx="11.6" cy="22.5" r="1.5" style="--rest:-13.5px;--dx:-1px;--d:-1.5s"/>'
+  + '<circle class="flask__bub" cx="10.4" cy="23" r="1.1" style="--rest:-4px;--d:-3s"/>'
+  + '<path class="flask__glass" d="M7 3V14.5A8.5 8.5 0 1 0 15 14.5V3M5 3H17"/>'
+  + '</g></svg>';
+
 const fill = (tpl, vars) => tpl.replace(/\{\{(\w+)\}\}/g, (m, k) => (k in vars ? vars[k] : m));
 
 // ---------------------------------------------------------------- main
@@ -406,6 +416,7 @@ async function main() {
     syncDate: esc(fmtSync(now)),
     domain: DOMAIN,
     owner: OWNER,
+    mark: MARK,
   };
 
   let html = await readFile(path.join(SRC, 'index.html'), 'utf8');
