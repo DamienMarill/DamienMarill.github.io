@@ -190,6 +190,17 @@ async function openBrowser() {
   }
 }
 
+// En dessous de ce poids, une capture 1280×800 est quasi vide : écran de chargement, spinner,
+// appli qui attend la caméra… On ne la garde pas.
+const MIN_PHOTO_BYTES = 12_000;
+
+// Rend une image distante en vignette 1280×800 locale (recadrée, compressée)
+async function snapImage(page, src, out) {
+  await page.setContent(`<!doctype html><body style="margin:0;background:#1a1648"><img src="${esc(src)}" style="display:block;width:100vw;height:100vh;object-fit:cover"></body>`);
+  await page.waitForFunction(() => { const i = document.querySelector('img'); return i && i.complete && i.naturalWidth > 0; }, null, { timeout: 20000 });
+  return page.screenshot({ path: out, type: 'jpeg', quality: 78 });
+}
+
 async function photograph(browser, items) {
   const context = await browser.newContext({
     viewport: { width: 1280, height: 800 },
@@ -198,21 +209,41 @@ async function photograph(browser, items) {
     ignoreHTTPSErrors: process.env.LAB_INSECURE === '1',
   });
   await mkdir(path.join(DIST, 'covers'), { recursive: true });
-  const queue = items.filter((it) => it.online && !it.cover);
+  // Pages en ligne sans visuel imposé + visuels imposés par URL (à rapatrier en local)
+  const queue = items.filter((it) => /^https?:/.test(it.cover) || (it.online && !it.cover));
   const worker = async () => {
     while (queue.length) {
       const it = queue.shift();
       const page = await context.newPage();
+      const file = `covers/${it.slug}.jpg`;
+      const out = path.join(DIST, file);
       try {
+        if (/^https?:/.test(it.cover)) {
+          await snapImage(page, it.cover, out);
+          Object.assign(it, { cover: `/${file}`, coverKind: 'image' });
+          console.log(`  ✓ visuel ${it.name}`);
+          continue;
+        }
         await page.goto(it.url, { waitUntil: 'networkidle', timeout: 25000 })
           .catch(() => page.waitForLoadState('load', { timeout: 10000 }));
         await page.evaluate(() => document.fonts && document.fonts.ready).catch(() => {});
         await page.waitForTimeout(1800);
-        const file = `covers/${it.slug}.jpg`;
-        await page.screenshot({ path: path.join(DIST, file), type: 'jpeg', quality: 78 });
-        it.cover = `/${file}`;
-        it.coverKind = 'photo';
-        console.log(`  ✓ photo ${it.name}`);
+        let shot = await page.screenshot({ path: out, type: 'jpeg', quality: 78 });
+        if (shot.length < MIN_PHOTO_BYTES) { // encore en chargement ? on laisse une chance
+          await page.waitForTimeout(4000);
+          shot = await page.screenshot({ path: out, type: 'jpeg', quality: 78 });
+        }
+        if (shot.length >= MIN_PHOTO_BYTES) {
+          Object.assign(it, { cover: `/${file}`, coverKind: 'photo' });
+          console.log(`  ✓ photo ${it.name}`);
+        } else if (it.ogImage) {
+          await snapImage(page, it.ogImage, out);
+          Object.assign(it, { cover: `/${file}`, coverKind: 'og' });
+          console.log(`  ~ photo ${it.name} : page vide, image og:image à la place`);
+        } else {
+          await rm(out, { force: true });
+          console.log(`  ✗ photo ${it.name} : page vide (chargement infini ?), pas de visuel`);
+        }
       } catch (err) {
         console.log(`  ✗ photo ${it.name} : ${err.message.split('\n')[0]}`);
       } finally {
