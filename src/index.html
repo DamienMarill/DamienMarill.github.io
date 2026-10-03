@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>lab. · le carnet de manips de Damien Marill</title>
-  <meta name="description" content="Le carnet de manips de Damien Marill : prototypes, supports de cours, jeux et petits outils, publiés tels quels sur GitHub Pages.">
+  <title>lab. · le carnet d'expériences de Damien Marill</title>
+  <meta name="description" content="Le carnet d'expériences de Damien Marill : prototypes, supports de cours, jeux et petits outils, publiés tels quels.">
   <meta name="theme-color" content="#f7f5f0" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#100d33" media="(prefers-color-scheme: dark)">
   <link rel="canonical" href="https://{{domain}}/">
@@ -12,7 +12,7 @@
   <meta property="og:type" content="website">
   <meta property="og:locale" content="fr_FR">
   <meta property="og:site_name" content="lab. · Marill.dev">
-  <meta property="og:title" content="lab. · le carnet de manips de Damien Marill">
+  <meta property="og:title" content="lab. · le carnet d'expériences de Damien Marill">
   <meta property="og:description" content="Prototypes, supports de cours, jeux et petits outils : tout ce que je bidouille, publié tel quel.">
   <meta property="og:url" content="https://{{domain}}/">
   <!-- og:image -->
@@ -23,16 +23,16 @@
   <link rel="stylesheet" href="/lab.css">
 </head>
 <body>
-  <a class="skip-link" href="#manips">Aller aux manips</a>
+  <a class="skip-link" href="#experiences">Aller aux expériences</a>
   <div class="notebook" aria-hidden="true"><span class="notebook__margin"></span><span class="notebook__holes"><i></i><i></i><i></i><i></i><i></i><i></i></span></div>
 
   <header class="top">
     <a class="brand" href="/" aria-label="lab., accueil">
       <span class="brand__mark">lab{{mark}}</span>
-      <span class="brand__sub">carnet de manips · Damien Marill</span>
+      <span class="brand__sub">carnet d'expériences · Damien Marill</span>
     </a>
     <nav class="top__nav" aria-label="Navigation principale">
-      <a href="#manips"><b>01</b> manips</a>
+      <a href="#experiences"><b>01</b> expériences</a>
       <a href="#protocole"><b>02</b> protocole</a>
       <a href="https://marill.dev"><b>03</b> marill.dev ↗</a>
     </nav>
@@ -41,29 +41,34 @@
   <main>
     <section class="hero" aria-labelledby="hero-title">
       <div class="hero__text">
-        <p class="folio"><span class="folio__tag">carnet n° 01</span><span>{{countLabel}} · mis à jour toutes les 6&nbsp;h</span></p>
+        <a class="hero__sign" href="https://marill.dev">
+          <picture>
+            <source srcset="/assets/marill-dev-blanc.png" media="(prefers-color-scheme: dark)">
+            <img src="/assets/marill-dev.png" alt="Marill.dev" width="356" height="64">
+          </picture>
+        </a>
         <h1 id="hero-title">Le <em class="hl">labo</em>.</h1>
         <p class="lead">Ici je <strong>bidouille, je teste et je partage</strong>&nbsp;: prototypes, supports de cours, jeux et petits outils. Tout est publié tel quel, même ce qui a raté.</p>
         <table class="ledger">
           <caption class="sr-only">Le carnet en chiffres</caption>
-          <thead><tr><th scope="col">manips</th><th scope="col">langages</th><th scope="col">dernière manip</th></tr></thead>
+          <thead><tr><th scope="col">expériences</th><th scope="col">langages</th><th scope="col">dernière en date</th></tr></thead>
           <tbody><tr><td>{{count}}</td><td>{{langCount}}</td><td><time datetime="{{lastIso}}" title="{{lastDateLong}}">{{lastDate}}</time></td></tr></tbody>
         </table>
       </div>
-      <div class="hero__board" aria-label="Les dernières manips">
+      <div class="hero__board" aria-label="Les dernières expériences">
         <!-- @featured -->
-        <p class="annot annot--latest" aria-hidden="true">la + récente
+        <p class="annot annot--latest" aria-hidden="true">les + récentes
           <svg viewBox="0 0 90 60" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6C30 10 60 20 82 48"/><path d="M70 46 83 49 82 36"/></svg>
         </p>
       </div>
     </section>
 
-    <section class="section" id="manips" aria-labelledby="manips-title">
+    <section class="section" id="experiences" aria-labelledby="experiences-title">
       <header class="section__head">
         <p class="section__num">01</p>
         <div>
-          <h2 id="manips-title">Toutes les manips</h2>
-          <p class="section__sub">Chaque fiche correspond à un dépôt GitHub qui a une page publiée. Le carnet se remplit tout seul.</p>
+          <h2 id="experiences-title">Toutes les expériences</h2>
+          <p class="section__sub">De la plus fraîche à la plus poussiéreuse. Cherchez par mot-clé ou filtrez par langage.</p>
         </div>
       </header>
 
@@ -84,8 +89,8 @@
       </div>
 
       <div class="empty" data-empty hidden>
-        <p>Aucune manip pour ces filtres.</p>
-        <button type="button" class="tab" data-reset>voir toutes les manips</button>
+        <p>Aucune expérience pour ces filtres.</p>
+        <button type="button" class="tab" data-reset>voir toutes les expériences</button>
       </div>
     </section>
 
@@ -94,17 +99,19 @@
         <p class="section__num">02</p>
         <div>
           <h2 id="protocole-title">Protocole</h2>
-          <p class="section__sub">Comment une idée finit dans le carnet.</p>
+          <p class="section__sub">D'une question qui me trotte dans la tête à ce que vous pouvez en faire.</p>
         </div>
       </header>
       <div class="protocol">
         <ol class="steps">
-          <li><span class="steps__n">1</span><div><h3>Je code un truc</h3><p>Un outil pour mes étudiants, un jeu pour tester une techno, une idée qui me trotte dans la tête. En dehors des projets clients.</p></div></li>
-          <li><span class="steps__n">2</span><div><h3>Je le publie</h3><p>Le dépôt part sur GitHub avec une page GitHub Pages. Pas de polish obligatoire&nbsp;: c'est un labo.</p></div></li>
-          <li><span class="steps__n">3</span><div><h3>Il atterrit ici</h3><p>Toutes les 6&nbsp;heures, le carnet relève les dépôts publiés, photographie chaque page et met sa fiche à jour.</p></div></li>
+          <li><span class="steps__n">1</span><div><p class="steps__kicker">hypothèse</p><h3>Tout part d'une question</h3><p>Du genre «&nbsp;une IA peut-elle tenir une bataille navale sur une grille de 5×5&nbsp;?&nbsp;». Parfois, c'est juste une techno que je n'ai jamais touchée et qui me fait de l'œil.</p></div></li>
+          <li><span class="steps__n">2</span><div><p class="steps__kicker">manipulation</p><h3>Je code sans filet</h3><p>Ici, aucun client ni cahier des charges&nbsp;: je teste et je recommence jusqu'à ce que ça tienne debout. C'est le seul endroit où j'ai le droit de rater.</p></div></li>
+          <li><span class="steps__n">3</span><div><p class="steps__kicker">observation</p><h3>À vous de jouer</h3><p>Chaque fiche ouvre l'expérience en ligne et son code sur GitHub. Le code est public, forkez-le ou piquez-y ce qui vous sert. Un bug&nbsp;? Ouvrez une issue sur le dépôt, je regarde.</p></div></li>
+          <li><span class="steps__n">4</span><div><p class="steps__kicker">conclusion</p><h3>Ce qu'il en reste</h3><p>Quand une expérience tient la route, elle devient un support de cours pour mes étudiants ou la base d'un vrai projet. Les autres restent dans le carnet avec leur tampon, parce qu'un raté documenté sert toujours à quelqu'un.</p></div></li>
         </ol>
         <div class="legend">
           <p class="legend__title">légende des tampons</p>
+          <p class="legend__intro">Le tampon de chaque fiche dit où en est l'expérience.</p>
           <ul>
             <li><span class="stamp stamp--en-cours">en cours</span> retouchée ce mois-ci</li>
             <li><span class="stamp stamp--stable">stable</span> touchée dans l'année</li>
@@ -115,7 +122,7 @@
         </div>
       </div>
       <aside class="cta">
-        <p>Une manip vous parle&nbsp;? On peut en faire <em class="hl">un vrai projet</em>.</p>
+        <p>Une expérience vous parle&nbsp;? On peut en faire <em class="hl">un vrai projet</em>.</p>
         <a class="cta__link" href="https://marill.dev/#contact">écrire à Damien →</a>
       </aside>
     </section>

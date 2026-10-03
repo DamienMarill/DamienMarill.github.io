@@ -14,7 +14,7 @@
     const count = document.querySelector('[data-count]');
     const empty = document.querySelector('[data-empty]');
     const fold = (s) => s.toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu, '').trim();
-    const plural = (n) => `${n} manip${n > 1 ? 's' : ''}`;
+    const plural = (n) => `${n} expérience${n > 1 ? 's' : ''}`;
     const state = { q: '', langs: new Set() };
 
     const params = new URLSearchParams(location.search);
@@ -41,7 +41,7 @@
       if (state.q.trim()) next.set('q', state.q.trim());
       if (state.langs.size) next.set('lang', [...state.langs].join(','));
       const qs = next.toString();
-      history.replaceState(null, '', qs ? `?${qs}#manips` : location.pathname + location.hash);
+      history.replaceState(null, '', qs ? `?${qs}#experiences` : location.pathname + location.hash);
     };
 
     input && input.addEventListener('input', () => { state.q = input.value; apply(); });
