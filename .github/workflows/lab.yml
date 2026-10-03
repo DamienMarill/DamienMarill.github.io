@@ -1,0 +1,58 @@
+name: Labo
+
+# Régénère le carnet lab.marill.dev :
+#  - à chaque push sur main (modif du template, de la config…)
+#  - toutes les 6 heures, pour attraper les nouveaux dépôts avec GitHub Pages
+#  - à la main depuis l'onglet Actions (bouton « Run workflow »)
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: '17 */6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+
+      - name: Installer les dépendances (playwright-core pour les vignettes)
+        run: npm install --no-audit --no-fund
+
+      - name: Générer le labo
+        run: node scripts/build.mjs
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          LAB_OWNER: ${{ github.repository_owner }}
+          LAB_DOMAIN: lab.marill.dev
+          CHROME_PATH: /usr/bin/google-chrome
+
+      - uses: actions/configure-pages@v6
+
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5
