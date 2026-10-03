@@ -1,0 +1,17 @@
+{
+  "name": "lab-marill-dev",
+  "private": true,
+  "type": "module",
+  "description": "lab. : le carnet de manips de Damien Marill (lab.marill.dev), généré à partir des dépôts publiés sur GitHub Pages.",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "build:offline": "LAB_FIXTURE=fixtures/repos.json LAB_PROBE=0 LAB_SCREENSHOTS=0 node scripts/build.mjs",
+    "serve": "npx --yes serve dist"
+  },
+  "optionalDependencies": {
+    "playwright-core": "^1.56.0"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}
