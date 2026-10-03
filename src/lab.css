@@ -146,20 +146,22 @@ button { font: inherit; color: inherit; }
   font-family: var(--font-display); font-weight: 800; font-size: 44px; line-height: 0.8; letter-spacing: -0.045em;
   color: var(--ink);
 }
-.brand__mark i {
-  position: relative; display: inline-block;
-  width: 0.3em; height: 0.3em; margin: 0 0 0.04em 0.07em;
-  border-radius: 50%; background: var(--accent);
+/* Le point de Marill.dev devient le liquide d'un ballon penché, d'où remontent des bulles.
+   Le liquide reste à l'horizontale ; seul le verre (et ce qu'il contient) pivote. */
+.brand__flask { flex: none; height: 0.74em; width: auto; margin: 0 0 -0.01em 0.05em; overflow: visible; }
+.flask__glass { fill: none; stroke: currentColor; stroke-width: 2.1; stroke-linecap: round; stroke-linejoin: round; }
+.flask__liquid { fill: var(--accent); }
+.flask__bub {
+  fill: none; stroke: var(--color-sakura-400); stroke-width: 1.4;
+  transform: translateY(var(--rest, 0px)); /* position figée : footer, image de partage, animations coupées */
 }
-.brand__mark i::after {
-  content: ''; position: absolute; left: 0.2em; top: -0.38em;
-  width: 0.16em; height: 0.16em; border-radius: 50%;
-  border: 0.045em solid var(--color-sakura-400);
-  animation: lab-bubble 5s ease-in-out infinite;
+@media (prefers-reduced-motion: no-preference) {
+  .brand__mark:not(.brand__mark--sm) .flask__bub { animation: lab-bub 4.5s cubic-bezier(0.45, 0, 0.75, 1) var(--d, 0s) infinite; }
 }
-@keyframes lab-bubble {
-  0%, 70%, 100% { transform: translate(0, 0); opacity: 1; }
-  85% { transform: translate(0.02em, -0.12em); opacity: 0.6; }
+@keyframes lab-bub {
+  0% { transform: translate(0, 0); opacity: 0; }
+  12%, 78% { opacity: 1; }
+  100% { transform: translate(var(--dx, 0px), -27px); opacity: 0; }
 }
 .brand__sub { font-family: var(--mono); font-size: 12px; color: var(--ink-soft); padding-bottom: 1px; }
 @media (max-width: 560px) { .brand__sub { display: none; } }
@@ -440,7 +442,6 @@ button { font: inherit; color: inherit; }
 }
 .foot p { margin: 0; display: flex; align-items: flex-end; flex-wrap: wrap; gap: 6px 18px; }
 .brand__mark--sm { font-size: 22px; margin-right: 4px; }
-.brand__mark--sm i::after { animation: none; }
 .foot a { color: var(--ink); text-underline-offset: 4px; }
 .foot a:hover { color: var(--accent-ink); }
 .foot__sync { color: var(--ink-faint); }
@@ -455,7 +456,7 @@ button { font: inherit; color: inherit; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .hl::before, .brand__mark i::after { animation: none; }
+  .hl::before { animation: none; }
   .js .reveal { opacity: 1; translate: none; }
   .shot, .card { transition: none; }
 }
