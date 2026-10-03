@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>lab. · le carnet de manips de Damien Marill</title>
+  <meta name="description" content="Le carnet de manips de Damien Marill : prototypes, supports de cours, jeux et petits outils, publiés tels quels sur GitHub Pages.">
+  <meta name="theme-color" content="#f7f5f0" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#100d33" media="(prefers-color-scheme: dark)">
+  <link rel="canonical" href="https://{{domain}}/">
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="fr_FR">
+  <meta property="og:site_name" content="lab. · Marill.dev">
+  <meta property="og:title" content="lab. · le carnet de manips de Damien Marill">
+  <meta property="og:description" content="Prototypes, supports de cours, jeux et petits outils : tout ce que je bidouille, publié tel quel.">
+  <meta property="og:url" content="https://{{domain}}/">
+  <!-- og:image -->
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=JetBrains+Mono:wght@400;500;700&family=Lato:ital,wght@0,400;0,700;1,400&display=swap">
+  <link rel="stylesheet" href="/lab.css">
+</head>
+<body>
+  <a class="skip-link" href="#manips">Aller aux manips</a>
+  <div class="notebook" aria-hidden="true"><span class="notebook__margin"></span><span class="notebook__holes"><i></i><i></i><i></i><i></i><i></i><i></i></span></div>
+
+  <header class="top">
+    <a class="brand" href="/" aria-label="lab., accueil">
+      <span class="brand__mark">lab<i></i></span>
+      <span class="brand__sub">carnet de manips · Damien Marill</span>
+    </a>
+    <nav class="top__nav" aria-label="Navigation principale">
+      <a href="#manips"><b>01</b> manips</a>
+      <a href="#protocole"><b>02</b> protocole</a>
+      <a href="https://marill.dev"><b>03</b> marill.dev ↗</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero__text">
+        <p class="folio"><span class="folio__tag">carnet n° 01</span><span>{{countLabel}} · mis à jour toutes les 6&nbsp;h</span></p>
+        <h1 id="hero-title">Le <em class="hl">labo</em>.</h1>
+        <p class="lead">Ici je <strong>bidouille, je teste et je partage</strong>&nbsp;: prototypes, supports de cours, jeux et petits outils. Tout est publié tel quel, même ce qui a raté.</p>
+        <table class="ledger">
+          <caption class="sr-only">Le carnet en chiffres</caption>
+          <thead><tr><th scope="col">manips</th><th scope="col">langages</th><th scope="col">dernière manip</th></tr></thead>
+          <tbody><tr><td>{{count}}</td><td>{{langCount}}</td><td><time datetime="{{lastIso}}" title="{{lastDateLong}}">{{lastDate}}</time></td></tr></tbody>
+        </table>
+      </div>
+      <div class="hero__board" aria-label="Les dernières manips">
+        <!-- @featured -->
+        <p class="annot annot--latest" aria-hidden="true">la + récente
+          <svg viewBox="0 0 90 60" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6C30 10 60 20 82 48"/><path d="M70 46 83 49 82 36"/></svg>
+        </p>
+      </div>
+    </section>
+
+    <section class="section" id="manips" aria-labelledby="manips-title">
+      <header class="section__head">
+        <p class="section__num">01</p>
+        <div>
+          <h2 id="manips-title">Toutes les manips</h2>
+          <p class="section__sub">Chaque fiche correspond à un dépôt GitHub qui a une page publiée. Le carnet se remplit tout seul.</p>
+        </div>
+      </header>
+
+      <div class="toolbar">
+        <label class="search">
+          <span class="search__label">chercher</span>
+          <input type="search" data-search-input placeholder="titre, techno, mot-clé..." autocomplete="off">
+        </label>
+        <div class="tabs" role="group" aria-label="Filtrer par langage">
+          <!-- @filters -->
+          <button type="button" class="tab tab--reset" data-reset hidden>× effacer les filtres</button>
+        </div>
+        <p class="count" data-count aria-live="polite">{{countLabel}}</p>
+      </div>
+
+      <div class="cards" data-grid>
+        <!-- @cards -->
+      </div>
+
+      <div class="empty" data-empty hidden>
+        <p>Aucune manip pour ces filtres.</p>
+        <button type="button" class="tab" data-reset>voir toutes les manips</button>
+      </div>
+    </section>
+
+    <section class="section section--protocol" id="protocole" aria-labelledby="protocole-title">
+      <header class="section__head">
+        <p class="section__num">02</p>
+        <div>
+          <h2 id="protocole-title">Protocole</h2>
+          <p class="section__sub">Comment une idée finit dans le carnet.</p>
+        </div>
+      </header>
+      <div class="protocol">
+        <ol class="steps">
+          <li><span class="steps__n">1</span><div><h3>Je code un truc</h3><p>Un outil pour mes étudiants, un jeu pour tester une techno, une idée qui me trotte dans la tête. En dehors des projets clients.</p></div></li>
+          <li><span class="steps__n">2</span><div><h3>Je le publie</h3><p>Le dépôt part sur GitHub avec une page GitHub Pages. Pas de polish obligatoire&nbsp;: c'est un labo.</p></div></li>
+          <li><span class="steps__n">3</span><div><h3>Il atterrit ici</h3><p>Toutes les 6&nbsp;heures, le carnet relève les dépôts publiés, photographie chaque page et met sa fiche à jour.</p></div></li>
+        </ol>
+        <div class="legend">
+          <p class="legend__title">légende des tampons</p>
+          <ul>
+            <li><span class="stamp stamp--en-cours">en cours</span> retouchée ce mois-ci</li>
+            <li><span class="stamp stamp--stable">stable</span> touchée dans l'année</li>
+            <li><span class="stamp stamp--en-sommeil">en sommeil</span> pas bougé depuis plus d'un an</li>
+            <li><span class="stamp stamp--archivee">archivée</span> dépôt archivé, gardé pour mémoire</li>
+            <li><span class="stamp stamp--hors-ligne">hors ligne</span> la page ne répond plus</li>
+          </ul>
+        </div>
+      </div>
+      <aside class="cta">
+        <p>Une manip vous parle&nbsp;? On peut en faire <em class="hl">un vrai projet</em>.</p>
+        <a class="cta__link" href="https://marill.dev/#contact">écrire à Damien →</a>
+      </aside>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <p><span class="brand__mark brand__mark--sm">lab<i></i></span> un carnet de <a href="https://marill.dev">Marill.dev</a></p>
+    <p class="foot__links">
+      <a href="https://marill.dev/mentions-legales">mentions légales</a>
+      <a href="https://marill.dev/politique-de-confidentialite">confidentialité</a>
+      <a href="https://github.com/{{owner}}">github</a>
+      <a href="mailto:pro@marill.dev">pro@marill.dev</a>
+    </p>
+    <p class="foot__sync">synchro {{syncDate}}</p>
+  </footer>
+
+  <script src="/lab.js" defer></script>
+</body>
+</html>
