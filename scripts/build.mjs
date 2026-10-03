@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * lab. — générateur du carnet de manips (lab.marill.dev).
+ * lab. — générateur du carnet d'expériences (lab.marill.dev).
  *
  * 1. Liste les dépôts publics du compte qui ont GitHub Pages activé.
  * 2. Sonde chaque page (statut, URL finale, <title>, meta description, og:image).
@@ -27,6 +27,8 @@ const DIST = path.join(ROOT, 'dist');
 
 const OWNER = process.env.LAB_OWNER || 'DamienMarill';
 const DOMAIN = process.env.LAB_DOMAIN || 'lab.marill.dev';
+// Domaine où chercher les sous-domaines de projets (lab.marill.dev → marill.dev)
+const SUB_BASE = process.env.LAB_SUBDOMAIN_BASE || DOMAIN.split('.').slice(1).join('.');
 const TOKEN = process.env.GITHUB_TOKEN || '';
 const FIXTURE = process.env.LAB_FIXTURE || '';
 const PROBE = process.env.LAB_PROBE !== '0';
@@ -256,15 +258,19 @@ const photo = (it, { eager = false } = {}) => (it.cover
 
 const stamp = (it, extra = '') => `<span class="stamp stamp--${it.status}${extra}">${STATUS[it.status]}</span>`;
 const lang = (it) => (it.language ? `<span class="lang" style="--hue:${it.hue}">${esc(it.language)}</span>` : '');
-const ext = (href) => (/^https?:/.test(href) ? ' rel="noopener"' : '');
+// Tout lien sortant (http/https) s'ouvre dans un nouvel onglet ; les ancres et mailto restent tels quels
+const blankify = (html) => html.replace(/<a\b([^>]*)>/g, (tag, attrs) => {
+  if (!/\bhref="https?:\/\//.test(attrs) || /\btarget=/.test(attrs)) return tag;
+  return `<a${attrs.replace(/\s+rel="[^"]*"/, '')} target="_blank" rel="noopener">`;
+});
 
 function polaroid(it, i) {
   const href = it.online ? it.href : it.repoUrl;
   return `
 <figure class="shot shot--${i + 1}">
   <span class="tape" aria-hidden="true"></span>
-  <a class="shot__photo" href="${esc(href)}"${ext(href)} tabindex="-1" aria-hidden="true">${photo(it, { eager: true })}</a>
-  <figcaption><a href="${esc(href)}"${ext(href)}><b>manip ${it.num}</b> · ${esc(it.title)}</a>${lang(it)}</figcaption>
+  <a class="shot__photo" href="${esc(href)}" tabindex="-1" aria-hidden="true">${photo(it, { eager: true })}</a>
+  <figcaption><a href="${esc(href)}"><b>exp. ${it.num}</b> · ${esc(it.title)}</a>${lang(it)}</figcaption>
   ${i === 0 ? stamp(it, ' shot__stamp') : ''}
 </figure>`;
 }
@@ -273,7 +279,7 @@ function card(it) {
   const href = it.online ? it.href : it.repoUrl;
   const desc = it.description
     ? `<p class="card__desc">${esc(it.description)}</p>`
-    : '<p class="card__desc card__desc--empty">Pas encore de notice pour cette manip.</p>';
+    : '<p class="card__desc card__desc--empty">Pas encore de notice pour cette expérience.</p>';
   const topics = it.topics.length
     ? `<p class="card__topics">${it.topics.map((t) => `<span>#${esc(t)}</span>`).join(' ')}</p>`
     : '';
@@ -282,8 +288,8 @@ function card(it) {
   <span class="tape" aria-hidden="true"></span>
   <div class="card__photo">${photo(it)}${stamp(it, ' card__stamp')}</div>
   <div class="card__body">
-    <p class="card__num">manip ${it.num}${lang(it)}</p>
-    <h3><a href="${esc(href)}"${ext(href)}>${esc(it.title)}</a></h3>
+    <p class="card__num">exp. ${it.num}${lang(it)}</p>
+    <h3><a href="${esc(href)}">${esc(it.title)}</a></h3>
     ${desc}
     ${topics}
     <dl class="card__meta">
@@ -291,7 +297,7 @@ function card(it) {
       <div><dt>màj</dt><dd title="${esc(fmtDate(it.pushedAt))}">${esc(it.updatedRel)}</dd></div>
     </dl>
     <p class="card__links">
-      <a class="card__go" href="${esc(href)}"${ext(href)} tabindex="-1" aria-hidden="true">${it.online ? 'ouvrir la manip' : 'voir le dépôt'} →</a>
+      <a class="card__go" href="${esc(href)}" tabindex="-1" aria-hidden="true">${it.online ? "ouvrir l'expérience" : 'voir le dépôt'} →</a>
       ${it.online ? `<a class="card__code" href="${esc(it.repoUrl)}" rel="noopener">code source</a>` : ''}
     </p>
   </div>
@@ -351,7 +357,15 @@ async function main() {
         if (!/github\.(io|com)$/.test(h.hostname) && h.hostname !== DOMAIN) url = h.href;
       } catch { /* homepage invalide : on garde l'URL Pages */ }
     }
-    const p = PROBE ? await probe(url) : { ok: true, finalUrl: url };
+    if (o.url) url = o.url;
+    let p = PROBE ? await probe(url) : { ok: true, finalUrl: url };
+    // Page Pages morte et rien de déclaré : le projet vit peut-être sur son propre sous-domaine
+    // (ex. chowa → chowa.marill.dev, hébergé ailleurs). Pas de DNS joker sur le domaine, donc pas de faux positif.
+    if (PROBE && !p.ok && url === `https://${DOMAIN}/${r.name}/` && /^[a-z0-9-]+$/i.test(r.name)) {
+      const guess = `https://${r.name.toLowerCase()}.${SUB_BASE}/`;
+      const g = await probe(guess);
+      if (g.ok) { url = guess; p = g; }
+    }
     const final = new URL(p.finalUrl || url);
     const title = o.title || cleanTitle(p.ogTitle, r.name) || cleanTitle(p.title, r.name) || humanize(r.name);
     const description = stripEmoji(o.description || r.description || p.description || '');
@@ -371,7 +385,7 @@ async function main() {
       langSlug: language ? norm(language) || 'autre' : '',
       hue: LANG_HUES[language.toLowerCase()] || DEFAULT_HUE,
       url: p.finalUrl || url,
-      href: final.hostname === DOMAIN ? final.pathname : final.href,
+      href: final.href, // absolu : chaque expérience est un site à part, elle s'ouvre dans un nouvel onglet
       display: (final.hostname + final.pathname).replace(/\/$/, ''),
       repoUrl: r.html_url || `https://github.com/${OWNER}/${r.name}`,
       createdAt: r.created_at,
@@ -408,7 +422,7 @@ async function main() {
   const n = items.length;
   const vars = {
     count: String(n).padStart(2, '0'),
-    countLabel: `${n} manip${n > 1 ? 's' : ''}`,
+    countLabel: `${n} expérience${n > 1 ? 's' : ''}`,
     langCount: String(langs.size).padStart(2, '0'),
     lastDate: last ? esc(fmtDots(last.pushedAt)) : '—',
     lastDateLong: last ? esc(fmtDate(last.pushedAt)) : '',
@@ -420,10 +434,10 @@ async function main() {
   };
 
   let html = await readFile(path.join(SRC, 'index.html'), 'utf8');
-  html = fill(html
+  html = blankify(fill(html
     .replace('<!-- @featured -->', featured.map(polaroid).join('\n'))
     .replace('<!-- @filters -->', filters(items))
-    .replace('<!-- @cards -->', byActivity.map(card).join('\n')), vars);
+    .replace('<!-- @cards -->', byActivity.map(card).join('\n')), vars));
 
   // CSS : jetons du design system Marill.dev (ADN) + identité du labo
   const dsParts = ['colors', 'typography', 'spacing', 'motion'];
@@ -438,11 +452,11 @@ async function main() {
 
   await Promise.all([
     writeFile(path.join(DIST, 'index.html'), html.replace('<!-- og:image -->', '')),
-    writeFile(path.join(DIST, '404.html'), fill(await readFile(path.join(SRC, '404.html'), 'utf8'), vars)),
+    writeFile(path.join(DIST, '404.html'), blankify(fill(await readFile(path.join(SRC, '404.html'), 'utf8'), vars))),
     writeFile(path.join(DIST, 'lab.css'), css),
     cp(path.join(SRC, 'lab.js'), path.join(DIST, 'lab.js')),
     cp(path.join(SRC, 'assets'), path.join(DIST, 'assets'), { recursive: true }),
-    writeFile(path.join(DIST, 'projects.json'), JSON.stringify({ generatedAt: now.toISOString(), owner: OWNER, manips: publicData }, null, 2)),
+    writeFile(path.join(DIST, 'projects.json'), JSON.stringify({ generatedAt: now.toISOString(), owner: OWNER, experiences: publicData }, null, 2)),
     writeFile(path.join(DIST, '.nojekyll'), ''),
   ]);
 
@@ -455,7 +469,7 @@ async function main() {
     await browser.close();
   }
 
-  console.log(`\n✓ ${n} manips · ${featured.length} au tableau · ${items.filter((i) => i.coverKind === 'photo').length} photos → dist/`);
+  console.log(`\n✓ ${n} expériences · ${featured.length} au tableau · ${items.filter((i) => i.coverKind === 'photo').length} photos → dist/`);
 }
 
 main().catch((err) => { console.error(err); process.exit(1); });
