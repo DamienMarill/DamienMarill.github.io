@@ -1,6 +1,6 @@
 # lab. · lab.marill.dev
 
-Le carnet de manips de Damien Marill : la page d'accueil liste automatiquement
+Le carnet d'expériences de Damien Marill : la page d'accueil liste automatiquement
 tous mes dépôts publics qui ont une page GitHub Pages.
 
 ## Comment ça marche
@@ -15,12 +15,14 @@ Le script :
 
 1. récupère les dépôts du compte via l'API GitHub et garde ceux qui ont Pages (hors forks) ;
 2. sonde chaque page publiée : statut, URL finale (domaines perso compris), `<title>`, meta description ;
+   si la page Pages ne répond pas et que rien n'est déclaré, il essaie `nom-du-depot.marill.dev`
+   (cas d'un projet hébergé ailleurs sur son propre sous-domaine, comme chowa) ;
 3. photographie chaque page avec Chrome, et génère l'image de partage (`og.jpg`) ;
 4. génère `dist/` (HTML statique, CSS, `projects.json`) et le publie sur Pages.
 
 La source Pages du dépôt doit être réglée sur **GitHub Actions** (Settings → Pages).
 
-## Remplir une fiche de manip
+## Remplir une fiche d'expérience
 
 Tout se règle depuis le panneau **About** de chaque dépôt :
 
@@ -33,7 +35,8 @@ Tout se règle depuis le panneau **About** de chaque dépôt :
 | Topic `lab-pin` | Épingle le dépôt en haut de page |
 
 Sans toucher au dépôt concerné, `lab.config.json` accepte des surcharges par nom
-de dépôt : `title`, `description`, `language`, `cover`, `pin`, `hidden`.
+de dépôt : `title`, `description`, `language`, `url` (adresse de l'expérience si elle vit ailleurs),
+`cover`, `pin`, `hidden`.
 
 Le tampon est calculé automatiquement : **en cours** (modifiée il y a moins de 30 jours),
 **stable** (moins d'un an), **en sommeil** (plus d'un an), **archivée**, ou **hors ligne**
@@ -41,9 +44,9 @@ si la page ne répond plus.
 
 ## Identité
 
-« Carnet de manip », dérivé de la charte Marill.dev : on garde la palette
+« Carnet d'expériences », dérivé de la charte Marill.dev : on garde la palette
 (blouge, sakura, peach, sky, deep-night), Bricolage Grotesque + Lato, le point du logo
-et les petites inclinaisons ; on ajoute le papier quadrillé, la marge rose, le scotch,
+et les petites inclinaisons (le point devient le liquide d'un ballon penché) ; on ajoute le papier quadrillé, la marge rose, le scotch,
 les tampons et JetBrains Mono pour les annotations. Mode sombre « carnet à la lampe »
 automatique. Les jetons de la charte sont dans `src/ds/`, l'identité du labo dans `src/lab.css`.
 

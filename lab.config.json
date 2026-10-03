@@ -1,5 +1,5 @@
 {
-  "$comment": "Surcharges optionnelles par dépôt. Clés possibles : title, description, language, cover (URL ou chemin), pin (true = épinglé en haut de page), hidden (true = masqué).",
+  "$comment": "Surcharges optionnelles par dépôt. Clés possibles : title, description, language, url (adresse de l'expérience si elle vit ailleurs), cover (URL ou chemin), pin (true = épinglé en haut de page), hidden (true = masqué).",
   "repos": {
     "carte-visite": { "title": "Carte de visite" }
   }
