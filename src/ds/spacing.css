@@ -1,0 +1,45 @@
+/* Marill.dev — spacing, layout & radii
+   Page spacing uses Tailwind units at a 12px root (1 unit = 3px).
+   Component spacing uses Flux's re-scaled 16px root (1 unit = 4px). */
+:root{
+  /* Page rhythm (12px root) */
+  --space-1: 3px;
+  --space-2: 6px;
+  --space-3: 9px;
+  --space-4: 12px;
+  --space-5: 15px;
+  --space-6: 18px;
+  --space-8: 24px;
+  --space-10: 30px;
+  --space-12: 36px;
+  --space-16: 48px;
+  --space-20: 60px;
+  --space-26: 78px;   /* py-26 — the standard vertical section padding */
+  --space-30: 90px;
+
+  /* Component rhythm (16px root, Flux) */
+  --space-ui-1: 4px;
+  --space-ui-2: 8px;
+  --space-ui-3: 12px;
+  --space-ui-4: 16px;
+  --space-ui-6: 24px;
+
+  /* Layout */
+  --container-max: 1800px;    /* section / .conteneur max-width */
+  --content-max: 1280px;      /* max-w-7xl inner column */
+  --gutter-sm: 12px;          /* px-4 */
+  --gutter-md: 30px;          /* sm:px-[2.5rem] */
+  --gutter-lg: 60px;          /* lg:px-[5rem] */
+  --nav-height: 84px;         /* py-6 + 36px logo at 12px root */
+  --anchor-offset: 84px;      /* scroll-margin-top: 7rem */
+
+  /* Radii — Flux scale */
+  --radius-sm: 6px;           /* rounded-md — badge, small button */
+  --radius-md: 8px;           /* rounded-lg — button base, contact tiles */
+  --radius-lg: 12px;          /* rounded-xl — card */
+  --radius-image: 6px;        /* rounded-md — cover image inside a card */
+  --radius-full: 9999px;      /* avatar, pill badge */
+
+  /* Borders */
+  --border-width: 1px;
+}

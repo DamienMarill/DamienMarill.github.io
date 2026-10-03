@@ -1,0 +1,91 @@
+/* Marill.dev — colour tokens
+   Source of truth: resources/css/app.css (@theme, Tailwind v4) + literal hexes
+   used inline in the Blade views. OKLCH values are copied verbatim from the repo. */
+:root{
+  /* ---- Brand core (app.css @theme) ---- */
+  --color-night: oklch(34.54% 0.199 267.97);        /* deep royal blue — hero field */
+  --color-deep-night: oklch(22.16% 0.144 264.20);   /* near-black indigo — page floor */
+  --color-sky: oklch(77.47% 0.121 247.97);          /* soft cyan-blue — "Transmettre" */
+  --color-blouge: oklch(65.15% 0.188 277.48);       /* periwinkle violet — ACCENT + logo dot */
+  --color-peach: oklch(79.55% 0.163 68.76);         /* warm amber — "Concevoir" */
+
+  /* Literal hexes hard-coded in home-page.blade.php — keep them exact */
+  --color-hero-blue: #2127BE;      /* hero background + <meta name="theme-color"> */
+  --color-night-floor: #0E0A35;    /* gradient end / projects + contact sections */
+  --color-glow-blue: #2025B3;      /* radial glow, mix-blend-color-dodge */
+  --color-glow-pink: #FFCAEC;      /* radial glow, mix-blend-lighten */
+  --color-glow-cyan: #92D9FF;      /* radial glow, mix-blend-hard-light */
+
+  /* ---- Sakura (rose/magenta) — pivot #ffa9f5 at 300 ---- */
+  --color-sakura-50:  oklch(97% 0.012 325);
+  --color-sakura-100: oklch(94% 0.028 325);
+  --color-sakura-200: oklch(89% 0.068 325);
+  --color-sakura-300: oklch(83% 0.125 325);
+  --color-sakura-400: oklch(74% 0.178 325);
+  --color-sakura-500: oklch(64% 0.212 325);
+  --color-sakura-600: oklch(54% 0.200 325);
+  --color-sakura-700: oklch(45% 0.174 325);
+  --color-sakura-800: oklch(37% 0.140 325);
+  --color-sakura-900: oklch(29% 0.105 325);
+  --color-sakura-950: oklch(20% 0.072 325);
+
+  /* ---- Gold (warm amber) — pivot #ffbd7d at 300 ---- */
+  --color-gold-50:  oklch(98% 0.016 68);
+  --color-gold-100: oklch(95% 0.042 68);
+  --color-gold-200: oklch(91% 0.092 68);
+  --color-gold-300: oklch(84% 0.150 68);
+  --color-gold-400: oklch(78% 0.180 68);
+  --color-gold-500: oklch(70% 0.185 68);
+  --color-gold-600: oklch(60% 0.170 68);
+  --color-gold-700: oklch(51% 0.148 68);
+  --color-gold-800: oklch(42% 0.118 68);
+  --color-gold-900: oklch(34% 0.088 68);
+  --color-gold-950: oklch(23% 0.058 68);
+
+  /* ---- Neutrals — Tailwind zinc, the scale every Flux surface reads ---- */
+  --color-zinc-50:  #fafafa;
+  --color-zinc-100: #f4f4f5;
+  --color-zinc-200: #e4e4e7;
+  --color-zinc-300: #d4d4d8;
+  --color-zinc-400: #a1a1aa;
+  --color-zinc-500: #71717a;
+  --color-zinc-600: #52525b;
+  --color-zinc-700: #3f3f46;
+  --color-zinc-800: #27272a;
+  --color-zinc-900: #18181b;
+  --color-zinc-950: #09090b;
+  --color-white: #ffffff;
+
+  /* ---- Accent (what Flux primary buttons, focus rings, checkboxes read) ---- */
+  --color-accent: var(--color-blouge);
+  --color-accent-content: var(--color-blouge);
+  --color-accent-foreground: var(--color-zinc-50);
+
+  /* ---- Semantic aliases — light surfaces (project pages, legal pages) ---- */
+  --surface-page: var(--color-zinc-50);
+  --surface-card: var(--color-white);
+  --surface-nav: color-mix(in srgb, var(--color-zinc-100) 80%, transparent);
+  --border-subtle: var(--color-zinc-200);
+  --text-strong: var(--color-deep-night);
+  --text-body: var(--color-zinc-700);
+  --text-muted: var(--color-zinc-500);
+  --text-link: var(--color-accent);
+
+  /* ---- Semantic aliases — night surfaces (home / landing, .dark) ---- */
+  --surface-night-page: var(--color-night-floor);
+  --surface-night-card: rgba(255,255,255,0.10);
+  --surface-night-raised: rgba(39,39,42,0.90);       /* bg-zinc-800/90 contact tiles */
+  --border-night: rgba(255,255,255,0.10);
+  --border-night-strong: var(--color-zinc-600);
+  --text-night-strong: var(--color-white);
+  --text-night-body: var(--color-zinc-300);
+  --text-night-muted: var(--color-zinc-400);
+
+  /* ---- Sakura-code rain palette (hero particles, sakura-code.js) ---- */
+  --sakura-rain-1: #ff98f3;
+  --sakura-rain-2: #ffbeda;
+  --sakura-rain-3: #f569e1;
+  --sakura-rain-4: #e040c8;
+  --sakura-rain-gold: #ffd97d;
+  --sakura-rain-cyan: #7df9ff;
+}

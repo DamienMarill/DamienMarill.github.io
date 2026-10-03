@@ -1,0 +1,23 @@
+/* Marill.dev — motion tokens
+   Two families: UI transitions (fast, ease, colour-only) and ambient loops
+   (slow, infinite, decorative). Everything ambient is disabled under
+   prefers-reduced-motion. */
+:root{
+  --duration-fast: 150ms; /* @kind other */
+  --duration-base: 200ms; /* @kind other */
+  --duration-slow: 300ms; /* @kind other */
+  --duration-reveal: 600ms; /* @kind other */
+  --stagger-reveal: 80ms; /* @kind other */
+
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);   /* @kind other */
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1); /* @kind other */
+
+  --hover-scale-cover: 1.05; /* @kind other */
+  --tremble-duration-min: 6.7s; /* @kind other */
+  --tremble-duration-max: 9.2s; /* @kind other */
+  --scroll-bounce-duration: 1.8s; /* @kind other */
+}
+@keyframes marill-reveal{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+@keyframes marill-scroll-bounce{0%,100%{transform:translate(-50%,0)}50%{transform:translate(-50%,0.6rem)}}
+@keyframes marill-tremble{0%,100%{transform:translate(0,0) rotate(0)}25%{transform:translate(2px,-3px) rotate(1.4deg)}50%{transform:translate(-2px,2px) rotate(-0.9deg)}75%{transform:translate(3px,1px) rotate(0.7deg)}}
+@media (prefers-reduced-motion: reduce){:root{--duration-reveal:0ms; /* @kind other */}}
